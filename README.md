@@ -1,81 +1,8 @@
-type TCondition = Error | object | ((err: Error) => boolean)
-type TCallback = (err: Error) => void
-class ErrorHandler {
-	protected isCaught = false
+# JS Error Handler
 
-	constructor(
-		protected err: Error,
-	) {}
+## Usage example 1
 
-	testOne(condition: TCondition) {
-		if (typeof condition === 'object') {
-			return lodash.isMatch(this.err, condition)
-		}
-
-		if (typeof condition !== 'function') {
-			return false
-		}
-
-		if (this.err instanceof condition) {
-			return true
-		}
-
-		return Boolean(condition(this.err))
-	}
-
-	test(condition: TCondition | TCondition[]) {
-		return lodash.isArray(condition)
-			? condition.some(this.testOne)
-			: this.testOne(condition)
-	}
-
-	catch(callback: TCallback): this
-	catch(condition: TCondition | TCondition[], callback: TCallback): this
-	catch(condition: TCondition | TCondition[] | TCallback, callback?: TCallback) {
-		if (this.isCaught) {
-			return this
-		}
-
-		if (arguments.length === 2) {
-			if (!this.test(condition)) {
-				return this
-			}
-		}
-		this.isCaught = true
-
-		if (arguments.length === 1) {
-			(condition as TCallback)(this.err)
-		} else if (callback !== undefined) {
-			callback(this.err)
-		}
-
-		return this
-	}
-
-	pass(condition: TCondition | TCondition[]) {
-		if (this.isCaught) {
-			return this
-		}
-
-		if (!this.test(condition)) {
-			return this
-		}
-		this.isCaught = true
-
-		return this
-	}
-
-	throw() {
-		if (!this.isCaught) {
-			throw this.err
-		}
-	}
-}
-
-const handleError = (err: Error) => {
-	return new ErrorHandler(err)
-}
-
+```
 try {
 	someErrorProneFunction()
 } catch (err) {
@@ -104,7 +31,11 @@ try {
 		.catch(ErrorType5) // do nothing for the following error typ
 		.throw()
 } // tslint:disable-line
+```
 
+## Usage example 2
+
+```
 try {
 	someErrorProneFunction()
 } catch (err) {
@@ -113,7 +44,11 @@ try {
 		.pass(ErrorType) // do nothing for the following error typ
 		.throw()
 }
+```
 
+## Usage example 3
+
+```
 try {
 	someErrorProneFunction()
 } catch (err) {
@@ -125,3 +60,4 @@ try {
 			console.error('general case not the error type', err.message)
 		})
 }
+```
