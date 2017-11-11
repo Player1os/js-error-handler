@@ -24,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Player1os/error-handler.git"
+    "url": "git+https://github.com/Player1os/js-error-handler.git"
   },
   "keywords": [
     "error",
@@ -33,9 +33,9 @@
   "author": "Osama Hassanein <player1os@gmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Player1os/error-handler/issues"
+    "url": "https://github.com/Player1os/js-error-handler/issues"
   },
-  "homepage": "https://github.com/Player1os/error-handler#readme",
+  "homepage": "https://github.com/Player1os/js-error-handler#readme",
   "dependencies": {
     "lodash": "^4.17.4"
   },
